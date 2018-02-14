@@ -5,7 +5,7 @@
 using namespace std;
 
 class BigInt {
-	vector<int> digits;
+	vector<int> dig;
 public:
 	BigInt(const BigInt& a);
 	BigInt(string num = "0");
@@ -17,15 +17,15 @@ public:
 
 struct Ascii2Int { int operator()(int c) { return c - '0'; } };
 
-BigInt::BigInt(const BigInt& other) :digits(other.digits) {}
+BigInt::BigInt(const BigInt& other) :dig(other.dig) {}
 
 BigInt& BigInt::operator=(BigInt a) {
-	digits.swap(a.digits);
+	dig.swap(a.dig);
 	return *this;
 }
 
 BigInt::BigInt(string num) {
-	transform(num.rbegin(), num.rend(), back_inserter(digits), Ascii2Int());
+	transform(num.rbegin(), num.rend(), back_inserter(dig), Ascii2Int());
 }
 BigInt& BigInt::operator +=(const BigInt& a)
 {
@@ -33,21 +33,21 @@ BigInt& BigInt::operator +=(const BigInt& a)
 	unsigned int num = 0;
 	unsigned int carry = 0;
 
-	//size for output variable
-	if (digits.size()<a.digits.size()) {
-		maxSize = a.digits.size();
-		digits.resize(a.digits.size());
+	
+	if (dig.size()<a.dig.size()) {
+		maxSize = a.dig.size();
+		dig.resize(a.dig.size());
 	}
 	else {
-		maxSize = digits.size();
+		maxSize = dig.size();
 	}
 
 	for (unsigned int i = 0; i < maxSize; i++)
 	{
-		if (i<a.digits.size())
-			num = digits[i] + a.digits[i] + carry;
+		if (i<a.dig.size())
+			num = dig[i] + a.dig[i] + carry;
 		else
-			num = digits[i] + carry;
+			num = dig[i] + carry;
 
 		if (num >= 10)
 		{
@@ -58,10 +58,10 @@ BigInt& BigInt::operator +=(const BigInt& a)
 			carry = 0;
 		}
 
-		digits[i] = num;
+		dig[i] = num;
 	}
 	if (carry) {
-		digits.push_back(1);
+		dig.push_back(1);
 	}
 
 	return *this;
@@ -75,15 +75,15 @@ BigInt BigInt::operator +(const BigInt& a) const
 
 std::ostream& operator <<(std::ostream& out, BigInt a)
 {
-	for (unsigned int i = 0; i < a.digits.size(); i++) {
-		out << a.digits[i] << endl;
+	for (unsigned int i = 0; i < a.dig.size(); i++) {
+		out << a.dig[i] << endl;
 	}
 	return out;
 }
 
 int main() {
-	BigInt B1("981654321");
-	BigInt B2("98431");
+	BigInt B1("8957");
+	BigInt B2("22");
 	BigInt B3;
 	B3 = B1 + B2;
 	cout << "B1+B2 is" << B3 << endl;
@@ -92,5 +92,7 @@ int main() {
 	B4 += B2;
 	B4 += B3;
 	cout << "B4 is" << B4 << endl;
-	return 0;
+	
+
+	system("pause");
 }
